@@ -1,34 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState, useEffect } from 'react'
+import reactLogo from './assets/SpaceX_Logo.png'
+//import './App.css'
+import * as API from "./services/launches";
+import {Box}  from "@chakra-ui/react"
 
-function App() {
-  const [count, setCount] = useState(0)
+export function App() {
+  const [launches, setLaunches] = useState([]);
+
+  useEffect(() => {
+    API.getAllLaunches().then(setLaunches);
+  }, []);
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+   <>
+   <img   src={reactLogo} width={300}></img>
+   <h1>SpaceX Launches</h1>
+<ul>
+  {launches.map((launch) => (
+    <Box p={20} key={launch.flight_number} >
+      {launch.mission_name}({launch.launch_year})
+    </Box>
+  ))}
+  </ul>
+    </>
+  );
 }
 
-export default App
+//export default App
